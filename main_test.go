@@ -7,14 +7,16 @@ import (
 // GORM_REPO: https://github.com/go-gorm/gorm.git
 // GORM_BRANCH: master
 // TEST_DRIVERS: sqlite, mysql, postgres, sqlserver
-
+//Company name set unique
 func TestGORM(t *testing.T) {
-	user := User{Name: "jinzhu"}
+	company := Company{Name: "jinzhu"}
 
-	DB.Create(&user)
+	DB.Create(&company)
 
-	var result User
-	if err := DB.First(&result, user.ID).Error; err != nil {
-		t.Errorf("Failed, got error: %v", err)
+	for i := 0; i < 1000; i++ {
+		if err := DB.Debug().Save(&company).Error; err != nil {
+			t.Errorf("%v", err)
+		}
 	}
+	//after some errors getting violation on unique value -
 }
